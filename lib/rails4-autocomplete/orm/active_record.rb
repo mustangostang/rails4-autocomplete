@@ -26,7 +26,7 @@ module Rails4Autocomplete
         items = items.where(get_autocomplete_where_clause(model, term, method, options)).
             limit(limit).order(order)
         unless where.blank?
-          where = where.call if where.is_a? Proc
+          where = where.call(self) if where.is_a? Proc
           items = items.where(where) 
         end
 
