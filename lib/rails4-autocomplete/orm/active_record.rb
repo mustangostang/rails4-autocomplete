@@ -25,7 +25,10 @@ module Rails4Autocomplete
         items = items.select(get_autocomplete_select_clause(model, method, options)) unless options[:full_model]
         items = items.where(get_autocomplete_where_clause(model, term, method, options)).
             limit(limit).order(order)
-        items = items.where(where) unless where.blank?
+        unless where.blank?
+          where = where.call if where.is_a? Proc
+          items = items.where(where) 
+        end
 
         items
       end
